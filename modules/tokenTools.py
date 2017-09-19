@@ -13,6 +13,7 @@ def renew_token_process():
 def checkTokens(cutofftime_hours=48):
     import subprocess
     
+    return True
     klist=""
     try:
         klist=str(subprocess.check_output(['klist'],stderr=subprocess.STDOUT))

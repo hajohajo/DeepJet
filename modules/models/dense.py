@@ -37,31 +37,32 @@ def dense_model_reg_fake(Inputs,nclasses,Inputshape,dropoutRate=0.25):
    return model
 
 
-def dense_model_reg(Inputs,nclasses,Inputshape,dropoutRate=0.25):
+def dense_model_reg(Inputs,nclasses,nregclasses,dropoutRate=0.0):
     """
     Dense matrix, defaults similar to 2016 training now with regression
     """
     #  Here add e.g. the normal dense stuff from DeepCSV
     x = Dense(100, activation='relu',kernel_initializer='lecun_uniform')(Inputs[0])
-    x = Dropout(dropoutRate)(x)
-    x = Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
-    x = Dropout(dropoutRate)(x)
-    x = Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
-    x = Dropout(dropoutRate)(x)
-    x = Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
-    #x = Dropout(dropoutRate)(x)
-    #x =  Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
-    #x = Dropout(dropoutRate)(x)
-    #x =  Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
+#    x = Dropout(dropoutRate)(x)
+    x = Dense(50, activation='relu',kernel_initializer='lecun_uniform')(x)
+#    x = Dropout(dropoutRate)(x)
+    x = Dense(10, activation='relu',kernel_initializer='lecun_uniform')(x)
+    x = Dense(2, activation='relu',kernel_initializer='lecun_uniform')(x)
+#    x = Dropout(dropoutRate)(x)
+#    x = Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
+#    x = Dropout(dropoutRate)(x)
+#    x =  Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
+#    x = Dropout(dropoutRate)(x)
+#    x =  Dense(100, activation='relu',kernel_initializer='lecun_uniform')(x)
     
     predictflav=Dense(nclasses, activation='softmax',kernel_initializer='lecun_uniform',name='flavour_pred')(x)
    
-    flavpt=merge( [x,Inputs[1]] , mode='concat')
-    flavpt=Dense(10, activation='relu',kernel_initializer='lecun_uniform')(flavpt)
+#    flavpt=merge( [x,Inputs[1]] , mode='concat')
+#    flavpt=Dense(10, activation='relu',kernel_initializer='lecun_uniform')(x)
     #flavpt=Dense(10, activation='linear',kernel_initializer='lecun_uniform')(flavpt)
    
     predictions = [predictflav,
-                   Dense(1, activation='linear',kernel_initializer='normal',name='pt_pred')(flavpt)]
+                   Dense(nregclasses, activation='linear',kernel_initializer='normal',name='pt_pred')(x)]
     model = Model(inputs=Inputs, outputs=predictions)
     return model
 

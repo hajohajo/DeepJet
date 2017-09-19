@@ -290,8 +290,9 @@ def makeROCs_async(intextfile, name_list, probabilities_list, truths_list, vetos
     
 def makePlots_async(intextfile, name_list, variables, cuts, colours,
                      outpdffile, xaxis='',yaxis='',
-                     normalized=False,profiles=False,
-                     minimum=-1e100,maximum=1e100,widthprofile=False,
+                     normalized=False,profiles=False,profileType="None",widthProfile=False,
+                     minimum=-1e100,maximum=1e100,
+		     xbins_=10,xmin_=0.0,xmax_=1.0,
                      treename="deepntuplizer/tree"): 
     
     
@@ -302,17 +303,16 @@ def makePlots_async(intextfile, name_list, variables, cuts, colours,
     colours_list=createColours(colours, name_list)
     
     
-
     import c_makePlots
     def worker():
         if profiles:
             c_makePlots.makeProfiles(files_list,name_list,
                               variables_list,cuts_list,colours_list,
-                                 outpdffile,xaxis,yaxis,normalized,minimum, maximum,treename)
+                                 outpdffile,xaxis,yaxis,normalized,profiles,profileType,widthProfile,minimum,maximum,xbins_,xmin_,xmax_,treename)
         else:
             c_makePlots.makePlots(files_list,name_list,
                                  variables_list,cuts_list,colours_list,
-                                 outpdffile,xaxis,yaxis,normalized,profiles,widthprofile,minimum,maximum,treename)
+                                 outpdffile,xaxis,yaxis,normalized,profiles,profileType,widthProfile,minimum,maximum,xbins_,xmin_,xmax_,treename)
     
 #    return worker()
     import multiprocessing

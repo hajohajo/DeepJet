@@ -50,6 +50,9 @@ def model_deepFlavourReference(Inputs,nclasses,nregclasses,dropoutRate=0.1):
     
     reg = Concatenate()( [flavour_pred, ptreginput ] ) 
     
+    reg = Dense(100,activation='relu',kernel_initializer='lecun_uniform',name='reg0',trainable=True)(reg)
+    reg = Dense(100,activation='relu',kernel_initializer='lecun_uniform',name='reg1',trainable=True)(reg)
+
     reg_pred=Dense(nregclasses, activation='linear',kernel_initializer='ones',name='regression_pred',trainable=True)(reg)
     
     predictions = [flavour_pred,reg_pred]
